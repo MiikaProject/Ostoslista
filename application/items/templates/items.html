@@ -1,0 +1,23 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+{% block body %}
+  <div>
+    Your possible purchase options. You can add more items to this list by clicking on the add item selection.
+  </div>
+  <div>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        {% for item in itemlist %}
+      </tr>
+      <td>{{item.name}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+    {% endfor %}
+      
+
+    </table>
+  </div>
+{% endblock %}

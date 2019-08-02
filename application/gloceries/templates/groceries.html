@@ -1,0 +1,29 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+{% block body %}
+
+  <div>
+    Your grocerylist
+  </div>
+  <div>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          {% for grocery in grocerylist %}
+        </tr>
+        <td>{{grocery.name}}</td>
+        <td>{{grocery.price}}</td>
+        <td>
+          <form method="POST" action="{{url_for('groceries.groceries_remove',grocery_id=grocery.id)}}">
+            <input type="submit" value="Remove"/>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+        
+  
+      </table>
+    </div>
+{% endblock %}

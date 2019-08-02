@@ -1,5 +1,8 @@
 # Ostoslista
 
-Ostoslista-sovelluksen tarkoituksena on toimia käyttäjälle muistilistana. Lisäksi sovellus pitää kirjaa ostetuista ostoksista.
+Grocerylist application's purpose is to ease user's tough task of remembering the glocerylist at the supermarket. It also allows to users to store their purchases so they can follow their monthly spending on groceries.
 
-Sovelluksen tietokantakaavio löytyy [täältä](https://github.com/MiikaProject/Ostoslista/blob/master/documentation/database_diagram.png).
+
+Application database chart can be found [here](https://github.com/MiikaProject/Ostoslista/blob/master/documentation/database_diagram.png).
+
+Grocerylist applications user stories can be found [here](https://github.com/MiikaProject/Ostoslista/blob/master/documentation/userstories.md)
