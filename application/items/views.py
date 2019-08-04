@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,request,redirect,url_for
 from application import app, db
-from application.items.models import Item
+from application.items.models.item import Item
 
 items = Blueprint('items',__name__,
                 template_folder='templates')
@@ -15,6 +15,7 @@ def items_index():
 
     #Pull all items from database and order them aplhabetically
     itemlist = Item.query.order_by(Item.name).all()
+
     return render_template("items.html",itemlist=itemlist) 
 
 

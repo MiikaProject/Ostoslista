@@ -12,13 +12,14 @@ app.config["SQLALCHEMY_ECHO"]=False
 db = SQLAlchemy(app)
 
 #Import database models
-from application.items.models import Item
-from application.gloceries.models import GroceryList
+from application.items.models.item import Item
+from application.groceries.models.GroceryList import GroceryList
+from application.groceries.models.GroceryItem import GroceryItem
 
 #Import blueprints(=routes=views)
 from application.main.views import main
 from application.items.views import items
-from application.gloceries.views import groceries
+from application.groceries.views import groceries
 
 #Register blueprints
 app.register_blueprint(items)
