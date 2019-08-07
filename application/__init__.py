@@ -1,13 +1,20 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 #Flask
 app = Flask(__name__)
 
+import os
 
-# SQLAlchemy configuration
-from flask_sqlalchemy import SQLAlchemy
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///groceries.db"
-app.config["SQLALCHEMY_ECHO"]=True
+if os.environ.get("HEROKU"):
+    app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URL")
+else:
+    # SQLAlchemy configuration
+    app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///groceries.db"
+    app.config["SQLALCHEMY_ECHO"]=True
+
+
+#Create secret key
 from os import urandom
 app.config["SECRET_KEY"] = urandom(32)
 
@@ -45,31 +52,10 @@ def load_user(user_id):
 
 
 #Create database tables
-db.create_all()
-
-#Initializing grocerylist for testing
-Testgrocery = GroceryList.query.all()
-if not Testgrocery:
-    NewGroceryList = GroceryList("default")
-    db.session.add(NewGroceryList)
-    db.session.commit()
-
-#Initialize some test Items.
-Itemlist = Item.query.all()
-if not Itemlist:
-    item1 = Item(name="Viili",price=0.7)
-    item2 = Item(name="Mehukeitto",price=1.4)
-    item3 = Item(name="Banaani",price=0.2)
-    item4 = Item(name="Maito",price=0.65)
-    item5 = Item(name="Appelsiini",price=0.5)
-    items =[item1,item2,item3,item4,item5]
-    for item in items:
-        db.session.add(item)
-    db.session.commit()
+try:
+    db.create_all()
+except:
+    pass    
 
 
-Accounts = Account.query.all()
-if not Accounts:
-    defaultuser = Account(name="default",username="default",password="salasana") 
-    db.session.add(defaultuser)
-    db.session.commit()       
+    
