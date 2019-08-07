@@ -1,0 +1,31 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+{% block body %}
+<div>{{error}}</div>
+<div>Enter your username and password</div>
+<form method="POST" action="{{url_for('auth.auth_login')}}">
+    <table>
+        <tr>
+            <td>
+                {{form.username.label}}
+                {{form.username}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{form.password.label}}
+                {{form.password}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Enter" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+
+
+{% endblock %}

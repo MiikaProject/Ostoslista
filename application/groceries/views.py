@@ -1,4 +1,5 @@
 from flask import Blueprint,Flask,render_template,request,redirect,url_for
+from flask_login import login_required
 
 from application import app, db
 from application.items.models.item import Item
@@ -12,6 +13,7 @@ groceries = Blueprint('groceries',__name__,
 
 
 @groceries.route("/groceries",methods=["GET"])
+@login_required
 def groceries_index():
 
     #Get all possible item choices from database
@@ -29,6 +31,7 @@ def groceries_index():
     return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist,form=GroceryForm())
 
 @groceries.route("/groceries/remove/<grocery_id>",methods=["POST"])
+@login_required
 def groceries_remove(grocery_id):
     #Get matching grocerylist
     grocerylist = GroceryList.query.filter_by(name='default').first()
@@ -48,6 +51,7 @@ def groceries_remove(grocery_id):
 
 
 @groceries.route("/groceries",methods=["POST"])
+@login_required
 def groceries_create():
     
     #Pull name from form

@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>GroceryList</title>
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <title>GroceryList</title>
+</head>
+
+<body>
   <span><a href="/">Home</a></span>
-  <span><a href="/items">Itemlist  </a></span>
+  <span><a href="/items">Itemlist </a></span>
   <span><a href="/groceries">Groceries</a></span>
-  <body>
-    {% block body %}
-      <p>
-        Content.
-      </p>
-    {% endblock %}
-  </body>
+  {% if current_user.is_authenticated %}
+  <div>Logged in as {{current_user.name}}.
+    <a href="{{url_for('auth.auth_logout')}}">Logout</a>
+  </div>
+  {% else %}
+  <span><a href="{{url_for('auth.auth_login')}}"> Login </a> </span>
+  {% endif %}
+  {% block body %}
+  <p>
+    Content.
+  </p>
+  {% endblock %}
+</body>
+
 </html>

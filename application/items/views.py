@@ -1,4 +1,5 @@
 from flask import Blueprint,render_template,request,redirect,url_for
+from flask_login import login_required
 
 from application import app, db
 from application.items.models.item import Item
@@ -9,6 +10,7 @@ items = Blueprint('items',__name__,
 
 
 @items.route("/items",methods=["GET"])
+@login_required
 def items_index():
 
     #Pull all items from database and order them aplhabetically
@@ -18,6 +20,7 @@ def items_index():
 
 
 @items.route("/items", methods=["POST"])
+@login_required
 def item_create():
     #Get form
     form = ItemForm(request.form)
@@ -43,11 +46,13 @@ def item_create():
     return redirect(url_for("items.items_index"))
 
 @items.route("/items/<item_id>",methods=["GET"])
+@login_required
 def item_view(item_id):
     item = Item.query.filter(Item.id==item_id).first()
     return render_template("item.html",item=item,form=ItemForm())   
 
 @items.route("/items/<item_id>",methods=["POST"])
+@login_required
 def item_update(item_id):
     form = ItemForm(request.form)
     print(form)
@@ -72,6 +77,7 @@ def item_update(item_id):
     return redirect(url_for("items.items_index"))
 
 @items.route("/items/remove/<item_id>",methods=["POST"])
+@login_required
 def item_remove(item_id):
     #get item from database
     item = Item.query.filter(Item.id==item_id).first()
