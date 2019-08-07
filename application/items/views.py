@@ -6,10 +6,6 @@ items = Blueprint('items',__name__,
                 template_folder='templates')
 
 
-@items.route("/new_item")
-def items_form():
-    return render_template("new_item.html") 
-
 @items.route("/items",methods=["GET"])
 def items_index():
 

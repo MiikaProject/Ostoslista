@@ -12,8 +12,10 @@ groceries = Blueprint('groceries',__name__,
 @groceries.route("/groceries",methods=["GET"])
 def groceries_index():
 
-    #Get all groceries from database for speficic list
+    #Get all possible item choices from database
+    itemlist = Item.query.all()
 
+    #Get all groceries from database for speficic list
     grocerylist = GroceryList.query.filter_by(name='default').first()
 
     #Collect individual items from groceryitems
@@ -22,15 +24,7 @@ def groceries_index():
         items.append(groceryitem.item)
         print(groceryitem)
 
-    return render_template("/groceries.html",grocerylist=grocerylist.items)
-
-@groceries.route("/groceries/new_grocery",methods=["GET"])
-def grocery_form():
-
-    #Get all possible item choices from database
-    itemlist = Item.query.all()
-
-    return render_template("new_grocery.html",itemlist=itemlist)
+    return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist)
 
 @groceries.route("/groceries/remove/<grocery_id>",methods=["POST"])
 def groceries_remove(grocery_id):
@@ -61,7 +55,7 @@ def groceries_create():
 
     #If item is not on itemlist,return back to add new grocery page
     if not itemToBeAdded:
-        return redirect(url_for("groceries.grocery_form"))
+        return redirect(url_for("groceries.groceries_index"))
 
     #Add item to grocerylist
     else:
@@ -75,6 +69,6 @@ def groceries_create():
         db.session.add(grocerylist)
         db.session.commit()
 
-        return redirect(url_for("groceries.grocery_form"))
+        return redirect(url_for("groceries.groceries_index"))
 
 

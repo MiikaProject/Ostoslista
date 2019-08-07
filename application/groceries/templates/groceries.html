@@ -3,27 +3,51 @@
 
 {% block body %}
 
-  <div>
-    Your grocerylist
-  </div>
-  <div>
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Price</th>
-          {% for groceryitem in grocerylist %}
-        </tr>
-        <td>{{groceryitem.item.name}}</td>
-        <td>{{groceryitem.item.price}}</td>
-        <td>
-          <form method="POST" action="{{url_for('groceries.groceries_remove',grocery_id=groceryitem.id)}}">
-            <input type="submit" value="Remove"/>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-        
-  
-      </table>
-    </div>
+<div>
+  Your grocerylist
+</div>
+<div>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      {% for groceryitem in grocerylist %}
+    </tr>
+    <td>{{groceryitem.item.name}}</td>
+    <td>{{groceryitem.item.price}}</td>
+    <td>
+      <form method="POST" action="{{url_for('groceries.groceries_remove',grocery_id=groceryitem.id)}}">
+        <input type="submit" value="Remove" />
+      </form>
+    </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<br>
+<br>
+<div>Add new item to your grocery list by typing its name! </div>
+<div>
+  Options here:
+</div>
+<div>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      {% for item in itemlist %}
+    </tr>
+    <td>{{item.name}}</td>
+    <td>{{item.price}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<div>
+  <form method="POST" action="{{ url_for('groceries.groceries_create') }}">
+    <div>Name:</div>
+    <input type="text" name="name" />
+    <input type="submit" value="Add a new grocery" />
+  </form>
+</div>
 {% endblock %}
