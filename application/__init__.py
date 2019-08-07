@@ -8,6 +8,7 @@ app = Flask(__name__)
 from flask_sqlalchemy import SQLAlchemy
 app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///groceries.db"
 app.config["SQLALCHEMY_ECHO"]=False
+app.config['SECRET_KEY'] = 'Salaisuus'
 
 db = SQLAlchemy(app)
 

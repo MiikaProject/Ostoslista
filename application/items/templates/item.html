@@ -2,8 +2,10 @@
 {% extends "layout.html" %}
 {% block body %}
 <div>
-    <p>Name : {{item.name}} </p>
-    <p>Price : {{item.price}} </p>
+    <p>
+        <div>Name : {{item.name}}</div>
+        <div>Price : {{item.price}}</div>
+    </p>
 </div>
 <div>
     Add new name or price
@@ -14,10 +16,12 @@
 <div>
     <form method="POST" action="{{url_for('items.item_update',item_id=item.id)}}">
         <div>
-            <div>Name:</div>
-            <input type="text" name="name">
-            <div>Price:</div>
-            <input type="text" name="price">
+            {{form.name.label}}
+            {{form.name}}
+        </div>
+        <div>
+            {{form.price.label}}
+            {{form.price}}
         </div>
         <input type="submit" value="Update">
     </form>

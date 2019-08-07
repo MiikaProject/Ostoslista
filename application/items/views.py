@@ -1,6 +1,8 @@
 from flask import Blueprint,render_template,request,redirect,url_for
+
 from application import app, db
 from application.items.models.item import Item
+from application.items.forms.itemform import ItemForm
 
 items = Blueprint('items',__name__,
                 template_folder='templates')
@@ -12,18 +14,26 @@ def items_index():
     #Pull all items from database and order them aplhabetically
     itemlist = Item.query.order_by(Item.name).all()
 
-    return render_template("items.html",itemlist=itemlist) 
+    return render_template("items.html",itemlist=itemlist,form=ItemForm()) 
 
 
 @items.route("/items", methods=["POST"])
 def item_create():
-    #Pull name from request
-    name = (request.form.get("name"))
+    #Get form
+    form = ItemForm(request.form)
 
-    #Convert text into float and deal with possible usage of "," as decimal pointer
-    price = (request.form.get("price"))
-    price = price.replace(",",".")
-    price = float(price)
+    #Get name
+    name = (form.name.data)
+
+    #Get price
+    price = form.price.data
+
+     #Run validations described in itemform.py, if false return and display errors
+    if not form.validate():
+        itemlist = Item.query.order_by(Item.name).all()
+        form.name.data=""
+        form.price.data=['']
+        return render_template("items.html",itemlist=itemlist,form=form)
 
     #Add Item to database
     newItem = Item(name=name,price=price)
@@ -35,13 +45,15 @@ def item_create():
 @items.route("/items/<item_id>",methods=["GET"])
 def item_view(item_id):
     item = Item.query.filter(Item.id==item_id).first()
-    return render_template("item.html",item=item)   
+    return render_template("item.html",item=item,form=ItemForm())   
 
 @items.route("/items/<item_id>",methods=["POST"])
 def item_update(item_id):
+    form = ItemForm(request.form)
+    print(form)
     #get new name and price from form
-    name = request.form.get("name")
-    price = (request.form.get("price"))
+    name = form.name.data
+    price = form.price.data
     
     #get item from database
     item = Item.query.filter(Item.id==item_id).first()

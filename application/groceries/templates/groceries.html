@@ -25,7 +25,6 @@
   </table>
 </div>
 <br>
-<br>
 <div>Add new item to your grocery list by typing its name! </div>
 <div>
   Options here:
@@ -43,11 +42,20 @@
     {% endfor %}
   </table>
 </div>
+<br>
+<div>
+        <ul>
+          {% for error in form.name.errors %}
+          <li>{{error}}</li>
+          {% endfor %}
+        </ul>
+</div>
 <div>
   <form method="POST" action="{{ url_for('groceries.groceries_create') }}">
-    <div>Name:</div>
-    <input type="text" name="name" />
+    {{form.name.label}}
+    {{form.name}}
     <input type="submit" value="Add a new grocery" />
   </form>
 </div>
+
 {% endblock %}

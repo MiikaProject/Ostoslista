@@ -29,15 +29,44 @@
     {% endfor %}
   </table>
 </div>
+<br>
 <div>Add new item</div>
-<div>
-  <form method="POST" action="{{ url_for('items.item_create') }}">
-    <div>Name:</div>
-    <input type="text" name="name" />
-    <div>Price:</div>
-    <input type="text" name="price" />
-</div>
-<input type="submit" value="Add a new item" />
+<form method="POST" action="{{ url_for('items.item_create') }}">
+    {{ form.csrf_token }}
+  <table>
+    <tr>
+      <td>
+        {{form.name.label}}
+        {{form.name}}
+        
+      </td>
+      <td>
+          <ul>
+            {% for error in form.name.errors %}
+            <li>{{error}}</li>
+            {% endfor %}
+          </ul>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        {{form.price.label}}
+        {{form.price}}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.price.errors %}
+          <li>{{error}}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="submit" value="Add a new item" />
+      </td>
+    </tr>
+  </table>
 </form>
 </div>
 
