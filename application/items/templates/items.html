@@ -3,7 +3,7 @@
 
 {% block body %}
 <div>
-  Your possible purchase options. You can add more items to this list below.
+  Your possible purchase options. You can add more items to this list below. You can also edit or remove item.
 </div>
 <div>
   <table>
@@ -14,6 +14,17 @@
     </tr>
     <td>{{item.name}}</td>
     <td>{{item.price}}</td>
+    <td>
+      <form method="GET" action="{{url_for('items.item_view',item_id=item.id)}}">
+        <input type="submit" value="Edit" />
+      </form>
+
+    </td>
+    <td>
+      <form method="POST" action="{{url_for('items.item_remove',item_id=item.id)}}">
+        <input type="submit" value="Remove" />
+      </form>
+    </td>
     </tr>
     {% endfor %}
   </table>
