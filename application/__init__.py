@@ -11,7 +11,7 @@ if os.environ.get("HEROKU"):
 else:
     # SQLAlchemy configuration
     app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///groceries.db"
-    app.config["SQLALCHEMY_ECHO"]=True
+    app.config["SQLALCHEMY_ECHO"]=False
 
 
 #Create secret key

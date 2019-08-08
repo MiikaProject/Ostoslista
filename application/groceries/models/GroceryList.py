@@ -1,7 +1,6 @@
-#Create database model for gloceries
 from application import db
 
-#Database model for Grocery
+#Database model for GroceryList
 class GroceryList(db.Model):
     __tablename__ = 'grocerylist'
     id = db.Column(db.Integer,primary_key=True)

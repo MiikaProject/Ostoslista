@@ -22,13 +22,16 @@ def groceries_index():
     #Get all groceries from database for speficic list
     grocerylist = GroceryList.query.filter_by(name='default').first()
 
-    #Collect individual items from groceryitems
+    #Collect individual items from groceryitems, if possible 
     items = []
-    for groceryitem in grocerylist.items:
-        items.append(groceryitem.item)
-        print(groceryitem)
+    if grocerylist.items:
+        for groceryitem in grocerylist.items:
+            items.append(groceryitem.item)
+            print(groceryitem)
+            return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist,form=GroceryForm())
+    else:
+        return render_template("/groceries.html",itemlist=itemlist,form=GroceryForm())
 
-    return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist,form=GroceryForm())
 
 @groceries.route("/groceries/remove/<grocery_id>",methods=["POST"])
 @login_required
@@ -43,6 +46,7 @@ def groceries_remove(grocery_id):
     for grocery in grocerylist.items:
         if grocery.id==grocery_id:
             grocerylist.items.remove(grocery)
+
     #Commit change to database
     db.session.add(grocerylist)
     db.session.commit()
@@ -61,7 +65,7 @@ def groceries_create():
     #Get item from database
     itemToBeAdded = Item.query.filter(Item.name==addedItem).first() 
 
-    #If item is not on itemlist,return back to add new grocery page
+    #If item is not on itemlist,return back to groceries page and display error
     if not itemToBeAdded:
         #Add error message
         errorlist=list(form.name.errors)

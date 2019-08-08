@@ -2,6 +2,8 @@ from application import db
 
 from application import db
 
+
+#Database model for user account
 class Account(db.Model):
 
     __tablename__ = "account"

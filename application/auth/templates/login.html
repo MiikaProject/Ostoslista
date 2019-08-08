@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div>{{error}}</div>
+
 <div>Enter your username and password</div>
 <form method="POST" action="{{url_for('auth.auth_login')}}">
     <table>
@@ -21,6 +21,11 @@
         <tr>
             <td>
                 <input type="submit" value="Enter" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{error}}
             </td>
         </tr>
     </table>

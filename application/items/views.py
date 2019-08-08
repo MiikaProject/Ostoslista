@@ -59,16 +59,17 @@ def item_update(item_id):
     #get new name and price from form
     name = form.name.data
     price = form.price.data
-    
+    print(price)
     #get item from database
     item = Item.query.filter(Item.id==item_id).first()
 
     #set new name and price, check for empty fields, in that case keep old values
     if(name!=""):
         item.name=name
-    if(price!=""):
-        price = price.replace(",",".")
-        item.price=float(price)
+    if not price:
+        print(price)
+    else:
+        item.price=price    
 
     #commit changes to database
     db.session.add(item)
