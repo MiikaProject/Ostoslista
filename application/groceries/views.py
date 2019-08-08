@@ -29,9 +29,12 @@ def groceries_index():
             for groceryitem in grocerylist.items:
                 items.append(groceryitem.item)
                 return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist,form=GroceryForm())
+            else:
+                return render_template("/groceries.html",itemlist=itemlist,form=GroceryForm())
     else:
         return render_template("/groceries.html",itemlist=itemlist,form=GroceryForm())
-
+    
+        
 
 @groceries.route("/groceries/remove/<grocery_id>",methods=["POST"])
 @login_required
