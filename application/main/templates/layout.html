@@ -16,7 +16,9 @@
   </div>
   {% else %}
   <span><a href="{{url_for('auth.auth_login')}}"> Login </a> </span>
+  <span><a href="{{url_for('auth.auth_register')}}">Register</a></span>
   {% endif %}
+  
   {% block body %}
   <p>
     Content.

@@ -24,11 +24,11 @@ def groceries_index():
 
     #Collect individual items from groceryitems, if possible 
     items = []
-    if grocerylist.items:
-        for groceryitem in grocerylist.items:
-            items.append(groceryitem.item)
-            print(groceryitem)
-            return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist,form=GroceryForm())
+    if grocerylist:
+        if grocerylist.items:
+            for groceryitem in grocerylist.items:
+                items.append(groceryitem.item)
+                return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist,form=GroceryForm())
     else:
         return render_template("/groceries.html",itemlist=itemlist,form=GroceryForm())
 
