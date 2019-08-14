@@ -1,11 +1,13 @@
 from flask import Blueprint,Flask,render_template,request,redirect,url_for
-from flask_login import login_required
+from flask_login import login_required,current_user
 
 from application import app, db
 from application.items.models.item import Item
 from application.groceries.models.GroceryList import GroceryList
 from application.groceries.models.GroceryItem import GroceryItem
+from application.auth.models.AccountGrocerylist import AccountGrocerylist
 from application.groceries.forms.groceryform import GroceryForm
+from application.groceries.forms.grocerylistform import GroceryListForm
 
 #Create blueprint for the moodule
 groceries = Blueprint('groceries',__name__,
@@ -19,39 +21,44 @@ def groceries_index():
     #Get all possible item choices from database
     itemlist = Item.query.all()
 
-    #Get all groceries from database for speficic list
-    grocerylist = GroceryList.query.filter_by(name='default').first()
+    #Get grocerylist for currently logged in user
+    lists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
 
-    #Collect individual items from groceryitems, if possible 
-    items = []
-    if grocerylist:
-        if grocerylist.items:
-            for groceryitem in grocerylist.items:
-                items.append(groceryitem.item)
-                return render_template("/groceries.html",grocerylist=grocerylist.items,itemlist=itemlist,form=GroceryForm())
-        else:
-            return render_template("/groceries.html",itemlist=itemlist,form=GroceryForm())
+    #If user has multiple grocerylists, collect them all, in the current version user is
+    #only assumed to have one grocerylist!
+    grocerylists = []
+    for accountgrocerylist in lists:
+        grocerylists.append(accountgrocerylist.grocerylist)
+    
+    #Chooce the first grocerylist to be the grocerylist to be shown
+    if grocerylists:
+        grocerylist = grocerylists[0] 
     else:
-        return render_template("/groceries.html",itemlist=itemlist,form=GroceryForm())
+        grocerylist = None
+    
+
+    return render_template("/groceries.html",grocerylist=grocerylist,itemlist=itemlist,form=GroceryForm())
     
         
 
 @groceries.route("/groceries/remove/<grocery_id>",methods=["POST"])
 @login_required
 def groceries_remove(grocery_id):
-    #Get matching grocerylist
-    grocerylist = GroceryList.query.filter_by(name='default').first()
+    #Get matching grocerylist for logged in user
+    accountgrocerylists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
+    #Current version only supports 1 grocerylist so choose that
+    accountgrocerylist = accountgrocerylists[0].grocerylist
 
     #convert grocery_id to int
     grocery_id = int(grocery_id)
 
     #Look for item in groceries.items and remove it from list
-    for grocery in grocerylist.items:
+    for grocery in accountgrocerylist.items:
         if grocery.id==grocery_id:
-            grocerylist.items.remove(grocery)
+            accountgrocerylist.items.remove(grocery)
 
     #Commit change to database
-    db.session.add(grocerylist)
+    db.session.add(accountgrocerylist)
     db.session.commit()
 
     return redirect(url_for("groceries.groceries_index"))
@@ -78,20 +85,47 @@ def groceries_create():
         form.name.data=""
         #Get itemlist for page
         itemlist=Item.query.all()
-        return render_template("groceries.html",form=form,itemlist=itemlist)
+        #Get grocerylist for user
+        accountgrocerylist = AccountGrocerylist.query.filter_by(account_id=current_user.id).first()
+        grocerylist=accountgrocerylist.grocerylist
+        return render_template("groceries.html",grocerylist=grocerylist,form=form,itemlist=itemlist)
 
     #Add item to grocerylist
     else:
-        #Get grocerylist from database
-        grocerylist = GroceryList.query.filter_by(name='default').first()
+        #Get grocerylist for currently logged in user
+
+        accountgrocerylists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
+
+        #Current version assumes user only has 1 grocerylist so chooce it
+        accountgrocerylist = accountgrocerylists[0].grocerylist
 
         #Create a new instance of groceryitem and add it to grocerylist    
         groceryitem=GroceryItem()
         groceryitem.item= itemToBeAdded
-        grocerylist.items.append(groceryitem)
-        db.session.add(grocerylist)
+        accountgrocerylist.items.append(groceryitem)
+        db.session.add(accountgrocerylist)
         db.session.commit()
 
         return redirect(url_for("groceries.groceries_index"))
 
 
+@groceries.route("/groceries/lists/new", methods=["GET","POST"])
+def grocerylists_new():
+
+    #Display the page which allows user to create grocerylist
+    if request.method=="GET":
+        return(render_template("grocerylists.html",form=GroceryListForm()))
+
+    #Handle creation of grocerylist for user
+    elif request.method=="POST":
+        form = GroceryListForm(request.form)
+        name = form.name.data
+
+        accountlist = AccountGrocerylist()
+        grocerylist =GroceryList(name)
+        accountlist.account = current_user
+        grocerylist.accounts.append(accountlist)
+        db.session.add(grocerylist)
+        db.session.commit()
+
+        return redirect(url_for("groceries.groceries_index"))

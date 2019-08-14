@@ -1,11 +1,13 @@
 <!-- Uses default page layout from main/templates/layout.html -->
 {% extends "layout.html" %}
 
+<!-- Page for managing itemlist-->
 {% block body %}
 <div>
   Your possible purchase options. You can add more items to this list below. You can also edit or remove item.
 </div>
 <div>
+  <!--List items already on itemlist and option to edit or remove them-->
   <table>
     <tr>
       <th>Name</th>
@@ -30,6 +32,8 @@
   </table>
 </div>
 <br>
+
+<!--Form for adding new item to itemlist-->
 <div>Add new item</div>
 <form method="POST" action="{{ url_for('items.item_create') }}">
     {{ form.csrf_token }}

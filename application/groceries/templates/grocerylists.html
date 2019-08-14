@@ -1,0 +1,19 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+{% block body %}
+
+<!-- Page for adding new grocerylist to account-->
+<div>
+    Grocerylists page
+    <form method="POST" action="{{ url_for('groceries.grocerylists_new') }}">
+        <div>
+            {{form.name.label}}
+            {{form.name}}
+        </div>
+        <input type="submit" value="Add a new grocerylist" />
+    </form>
+</div>
+
+
+{% endblock %}

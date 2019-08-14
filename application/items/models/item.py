@@ -1,4 +1,4 @@
-#Create database model for Item
+#Database model for Item
 from application import db
 
 class Item(db.Model):

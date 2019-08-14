@@ -1,15 +1,15 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
-#Flask
-app = Flask(__name__)
-
 import os
 
+#Create Flask app
+app = Flask(__name__)
+
+
+#SQL-Alchemy configurations for Heroku and local use
 if os.environ.get("HEROKU"):
     app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URL")
 else:
-    # SQLAlchemy configuration
     app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///groceries.db"
     app.config["SQLALCHEMY_ECHO"]=False
 
@@ -25,8 +25,9 @@ from application.items.models.item import Item
 from application.groceries.models.GroceryList import GroceryList
 from application.groceries.models.GroceryItem import GroceryItem
 from application.auth.models.Account import Account
+from application.auth.models.AccountGrocerylist import AccountGrocerylist
 
-#Import blueprints(=routes=views)
+#Import blueprints(=views), blueprints allow modular project structure in Flask applications
 from application.main.views import main
 from application.items.views import items
 from application.groceries.views import groceries

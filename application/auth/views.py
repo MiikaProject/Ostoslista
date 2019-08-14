@@ -64,17 +64,18 @@ def auth_register():
                 username=form.username.data
                 password=form.password.data
 
+                #Return back to register page if validations fail
                 if not form.validate():
                         return(render_template("register.html",form=form))
                 
-                #Add new account to database
+                #Create new account to be added to database
                 newAccount = Account(name,username,password)
                 
-                #Try to enter accoount into database
+                #Try to enter account into database
                 try:
                         db.session.add(newAccount)
                         db.session.commit()
-                #Deal with situation if username is already taken
+                #Deal with situation if username is already taken by returning to register page and displaying error message
                 except exc.SQLAlchemyError as error:
                         error=str(error.orig)   
                         if error=="UNIQUE constraint failed: account.username":

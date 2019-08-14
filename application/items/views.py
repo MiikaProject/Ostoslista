@@ -5,10 +5,12 @@ from application import app, db
 from application.items.models.item import Item
 from application.items.forms.itemform import ItemForm
 
+#Create blueprint for items
 items = Blueprint('items',__name__,
                 template_folder='templates')
 
 
+#Default display items page            
 @items.route("/items",methods=["GET"])
 @login_required
 def items_index():
@@ -19,19 +21,20 @@ def items_index():
     return render_template("items.html",itemlist=itemlist,form=ItemForm()) 
 
 
+    
+#Functionality to add new item to itemlist
 @items.route("/items", methods=["POST"])
 @login_required
 def item_create():
+    
     #Get form
     form = ItemForm(request.form)
 
-    #Get name
+    #Get name and price
     name = (form.name.data)
-
-    #Get price
     price = form.price.data
 
-     #Run validations described in itemform.py, if false return and display errors
+    #Run validations described in itemform.py, if false return and display errors
     if not form.validate():
         itemlist = Item.query.order_by(Item.name).all()
         form.name.data=""
@@ -51,6 +54,7 @@ def item_view(item_id):
     item = Item.query.filter(Item.id==item_id).first()
     return render_template("item.html",item=item,form=ItemForm())   
 
+#Edit item    
 @items.route("/items/<item_id>",methods=["POST"])
 @login_required
 def item_update(item_id):
@@ -77,6 +81,7 @@ def item_update(item_id):
 
     return redirect(url_for("items.items_index"))
 
+#Remove item from itemlist    
 @items.route("/items/remove/<item_id>",methods=["POST"])
 @login_required
 def item_remove(item_id):

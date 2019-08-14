@@ -1,6 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,validators,DecimalField,fields
 
+#Form for adding item to itemlist
+
+
 #Create custom field to make field work even if user uses comma or dot
 class FlexibleDecimalField(fields.DecimalField):
 

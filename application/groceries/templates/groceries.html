@@ -1,61 +1,89 @@
 <!-- Uses default page layout from main/templates/layout.html -->
 {% extends "layout.html" %}
 
+<!-- Page to show user grocerylist and add items to grocerylist-->
 {% block body %}
 
-<div>
-  Your grocerylist
-</div>
-<div>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Price</th>
-      {% for groceryitem in grocerylist %}
-    </tr>
-    <td>{{groceryitem.item.name}}</td>
-    <td>{{groceryitem.item.price}}</td>
-    <td>
-      <form method="POST" action="{{url_for('groceries.groceries_remove',grocery_id=groceryitem.id)}}">
-        <input type="submit" value="Remove" />
-      </form>
-    </td>
-    </tr>
-    {% endfor %}
-  </table>
-</div>
-<br>
-<div>Add new item to your grocery list by typing its name! </div>
-<div>
-  Options here:
-</div>
-<div>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Price</th>
-      {% for item in itemlist %}
-    </tr>
-    <td>{{item.name}}</td>
-    <td>{{item.price}}</td>
-    </tr>
-    {% endfor %}
-  </table>
-</div>
-<br>
-<div>
-        <ul>
-          {% for error in form.name.errors %}
-          <li>{{error}}</li>
-          {% endfor %}
-        </ul>
-</div>
-<div>
-  <form method="POST" action="{{ url_for('groceries.groceries_create') }}">
-    {{form.name.label}}
-    {{form.name}}
-    <input type="submit" value="Add a new grocery" />
-  </form>
-</div>
+
+    <!--Check if user has a grocerylist -->
+    {% if grocerylist is not none %}
+
+        <!--Display empty message if theres no items on list-->
+        {% if grocerylist.items|length==0 %}
+            <div>Your list is empty!</div>
+
+        <!--List items on grocerylist-->
+        {% else %}
+            <div>Your grocerylist:</div>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>Price</td>
+                </tr>
+
+                <!--List items on grocerylist and display button to remove them from list-->
+                {% for groceryitem in grocerylist.items %}
+                    <tr>
+                        <td>{{groceryitem.item.name}}</td>
+                        <td>{{groceryitem.item.price}}</td>
+                        <td>
+                            <form method="POST" action="{{url_for('groceries.groceries_remove',grocery_id=groceryitem.id)}}">
+                            <input type="submit" value="Remove" />
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            
+
+        {% endif %}
+        <br>
+
+        <!--Print item choices-->
+        <div>Add items typing their name!</div>
+        <div>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>Price</td>
+                </tr>
+                {% for item in itemlist %}
+                    <tr>
+                        <td>{{item.name}}</td>
+                        <td>{{item.price}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+
+        </div>
+
+        <!--Print errors incase input for add grocerylist is invalid-->
+        <div>
+                <ul>
+                  {% for error in form.name.errors %}
+                  <li>{{error}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+        <!--Form and logic for adding item to grocerylist-->
+        <div>
+            <form method="POST" action="{{ url_for('groceries.groceries_create') }}">
+              {{form.name.label}}
+              {{form.name}}
+              <input type="submit" value="Add a new grocery" />
+            </form>
+        </div>
+
+    <!-- If user does not have a own grocerylist yet, offers option to create one -->    
+    {% else %}
+
+    <div>You dont have a grocerylist yet</div>
+    <div>Create one
+        <a href="{{url_for('groceries.grocerylists_new')}}">Here</a>
+    </div>
+
+    {% endif %}
 
 {% endblock %}

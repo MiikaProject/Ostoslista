@@ -1,7 +1,5 @@
 from application import db
 
-from application import db
-
 
 #Database model for user account
 class Account(db.Model):
@@ -13,6 +11,7 @@ class Account(db.Model):
     name = db.Column(db.String(144), nullable=False)
     username = db.Column(db.String(144), nullable=False,unique=True)
     password = db.Column(db.String(144), nullable=False)
+    accountgrocerylists =db.relationship("AccountGrocerylist",back_populates="account")
 
     def __init__(self, name, username, password):
         self.name = name
@@ -33,4 +32,4 @@ class Account(db.Model):
 
 
     def __str__(self):
-        return f'name:{self.name},username:{self.username}'    
+        return f'name:{self.name},username:{self.username},grocerylists:{self.accountgrocerylists}'    
