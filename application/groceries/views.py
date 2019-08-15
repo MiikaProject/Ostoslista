@@ -36,8 +36,11 @@ def groceries_index():
     else:
         grocerylist = None
     
+    #Calculate total cost of groceries on grocerylist by using aggregate query
+    #defined in groceries.GroceryList
+    sum = GroceryList.calculate_grocerylist_sum(current_user.id)
 
-    return render_template("/groceries.html",grocerylist=grocerylist,itemlist=itemlist,form=GroceryForm())
+    return render_template("/groceries.html",grocerylist=grocerylist,itemlist=itemlist,form=GroceryForm(),sum=sum)
     
         
 
@@ -110,6 +113,7 @@ def groceries_create():
 
 
 @groceries.route("/groceries/lists/new", methods=["GET","POST"])
+@login_required
 def grocerylists_new():
 
     #Display the page which allows user to create grocerylist

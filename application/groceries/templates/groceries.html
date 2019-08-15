@@ -15,10 +15,10 @@
         <!--List items on grocerylist-->
         {% else %}
             <div>Your grocerylist:</div>
-            <table>
+            <table style="border-collapse: collapse">
                 <tr>
-                    <td>Name</td>
-                    <td>Price</td>
+                    <th>Name</th>
+                    <th>Price</th>
                 </tr>
 
                 <!--List items on grocerylist and display button to remove them from list-->
@@ -33,6 +33,14 @@
                         </td>
                     </tr>
                 {% endfor %}
+                <!--If grocerylist sum is available, display it-->
+                {% if sum is defined %}
+                    
+                    <tr style="border-top:1px solid black">
+                        <td>Total:</td>
+                        <td>{{sum}}</td>
+                    </tr>
+                {% endif %}
             </table>
             
 
@@ -44,8 +52,8 @@
         <div>
             <table>
                 <tr>
-                    <td>Name</td>
-                    <td>Price</td>
+                    <th>Name</th>
+                    <th>Price</th>
                 </tr>
                 {% for item in itemlist %}
                     <tr>
