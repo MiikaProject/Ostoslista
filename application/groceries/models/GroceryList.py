@@ -16,13 +16,15 @@ class GroceryList(db.Model):
         return f'listname:{self.name},items:{self.items},owners:{self.accounts}'
     
 
+    #Aggregate query for calculating total price of items on grocerylist
     @staticmethod
     def calculate_grocerylist_sum(user_id):
         stmt = text("SELECT grocerylist.id, SUM(item.price)"
                     " FROM grocerylist"
                     " INNER JOIN groceryitem ON grocerylist.id = groceryitem.grocerylist_id"
                     " INNER JOIN item ON groceryitem.item_id = item.id"
-                    " WHERE grocerylist.id=:user_id")
+                    " GROUP BY grocerylist.id"
+                    " HAVING grocerylist.id=:user_id")
         result = db.engine.execute(stmt,user_id=user_id)
         
         sum = None
