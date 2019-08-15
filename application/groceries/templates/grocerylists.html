@@ -4,16 +4,14 @@
 {% block body %}
 
 <!-- Page for adding new grocerylist to account-->
-<div>
-    Grocerylists page
-    <form method="POST" action="{{ url_for('groceries.grocerylists_new') }}">
-        <div>
-            {{form.name.label}}
-            {{form.name}}
-        </div>
-        <input type="submit" value="Add a new grocerylist" />
-    </form>
-</div>
+<h2>Add new grocerylist</h2>   
+<form method="POST" action="{{ url_for('groceries.grocerylists_new') }}">
+    <div class="form-group">
+        {{wtf.form_field(form.name,class="form-control",placeholder="Name of your grocerylist")}}
+    </div>
+    <button type="submit" class="btn btn-primary">Create new grocerylist!</button>
+</form>
+
 
 
 {% endblock %}

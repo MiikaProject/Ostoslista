@@ -1,10 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
 import os
 
 #Create Flask app
 app = Flask(__name__)
-
+Bootstrap(app)
 
 #SQL-Alchemy configurations for Heroku and local use
 if os.environ.get("HEROKU"):

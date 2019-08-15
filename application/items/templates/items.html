@@ -1,9 +1,10 @@
 <!-- Uses default page layout from main/templates/layout.html -->
 {% extends "layout.html" %}
 
-<!-- Page for managing itemlist-->
+<!-- This page is for managing itemlist-->
 {% block body %}
-<div>
+<h2 style="margin: 20px;margin-left: 0px">ItemList</h2>
+<div class="lead">
   Your possible purchase options. You can add more items to this list below. You can also edit or remove item.
 </div>
 <div>
@@ -18,13 +19,13 @@
     <td>{{item.price}}</td>
     <td>
       <form method="GET" action="{{url_for('items.item_view',item_id=item.id)}}">
-        <input type="submit" value="Edit" />
+          <button type="submit" class="btn btn-primary">Edit</button>
       </form>
 
     </td>
     <td>
       <form method="POST" action="{{url_for('items.item_remove',item_id=item.id)}}">
-        <input type="submit" value="Remove" />
+      <button type="submit" class="btn btn-primary">Remove</button>
       </form>
     </td>
     </tr>
@@ -34,44 +35,18 @@
 <br>
 
 <!--Form for adding new item to itemlist-->
-<div>Add new item</div>
+<div class="lead">Add new item</div>
+
 <form method="POST" action="{{ url_for('items.item_create') }}">
     {{ form.csrf_token }}
-  <table>
-    <tr>
-      <td>
-        {{form.name.label}}
-        {{form.name}}
-        
-      </td>
-      <td>
-          <ul>
-            {% for error in form.name.errors %}
-            <li>{{error}}</li>
-            {% endfor %}
-          </ul>
-        </td>
-    </tr>
-    <tr>
-      <td>
-        {{form.price.label}}
-        {{form.price}}
-      </td>
-      <td>
-        <ul>
-          {% for error in form.price.errors %}
-          <li>{{error}}</li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <input type="submit" value="Add a new item" />
-      </td>
-    </tr>
-  </table>
-</form>
+    <div class="form-group">
+      {{wtf.form_field(form.name,class="form-control")}}
+    </div>
+    <div class="form-group">
+        {{wtf.form_field(form.price,class="form-control")}}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 </div>
 
 {% endblock %}

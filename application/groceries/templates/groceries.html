@@ -1,20 +1,21 @@
 <!-- Uses default page layout from main/templates/layout.html -->
 {% extends "layout.html" %}
 
+
 <!-- Page to show user grocerylist and add items to grocerylist-->
 {% block body %}
 
 
     <!--Check if user has a grocerylist -->
     {% if grocerylist is not none %}
+    <h2 style="margin: 20px;margin-left: 0px">GroceryList</h2>
 
         <!--Display empty message if theres no items on list-->
         {% if grocerylist.items|length==0 %}
-            <div>Your list is empty!</div>
+            <div class="lead">Your list is empty!</div>
 
         <!--List items on grocerylist-->
         {% else %}
-            <div>Your grocerylist:</div>
             <table style="border-collapse: collapse">
                 <tr>
                     <th>Name</th>
@@ -28,7 +29,7 @@
                         <td>{{groceryitem.item.price}}</td>
                         <td>
                             <form method="POST" action="{{url_for('groceries.groceries_remove',grocery_id=groceryitem.id)}}">
-                            <input type="submit" value="Remove" />
+                                <button type="submit" class="btn btn-primary">Remove</button>
                             </form>
                         </td>
                     </tr>
@@ -48,7 +49,7 @@
         <br>
 
         <!--Print item choices-->
-        <div>Add items typing their name!</div>
+        <div class="lead" style="margin: 15px;margin-left: 0px">Add items typing their name!</div>
         <div>
             <table>
                 <tr>
@@ -78,16 +79,17 @@
         <!--Form and logic for adding item to grocerylist-->
         <div>
             <form method="POST" action="{{ url_for('groceries.groceries_create') }}">
-              {{form.name.label}}
-              {{form.name}}
-              <input type="submit" value="Add a new grocery" />
+                    <div class="form-group">
+                        {{wtf.form_field(form.name,class="form-control")}}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add to list!</button>
             </form>
         </div>
 
     <!-- If user does not have a own grocerylist yet, offers option to create one -->    
     {% else %}
 
-    <div>You dont have a grocerylist yet</div>
+    <div class="lead">You dont have a grocerylist yet</div>
     <div>Create one
         <a href="{{url_for('groceries.grocerylists_new')}}">Here</a>
     </div>
