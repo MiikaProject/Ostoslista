@@ -21,18 +21,18 @@ class GroceryList(db.Model):
     #deal with situations where one user would have multiple grocerylists. This
     #This might be a little silly way of doing this, maybe the method for calculating
     #sum should be inserted into either Account or Accountgrocerylist model instead of in grocerylist
-    
+
     @staticmethod
     def calculate_grocerylist_sum(user_id):
-        stmt = text("SELECT account.name,account.id,SUM(item.price) from account"
-                    " INNER JOIN accountgrocerylist ON account.id = accountgrocerylist.account_id"
-                    " INNER JOIN grocerylist ON accountgrocerylist.grocerylist_id = grocerylist.id"
-                    " INNER JOIN groceryitem ON grocerylist.id = groceryitem.grocerylist_id"
-                    " INNER JOIN item ON groceryitem.item_id = item.id"
-                    " WHERE account.id=:user_id")
+        stmt = text("SELECT accountgrocerylist.account_id,SUM(item.price) from accountgrocerylist"
+                    " INNER JOIN grocerylist ON accountgrocerylist.grocerylist_id=grocerylist.id"
+                    " INNER JOIN groceryitem ON groceryitem.grocerylist_id=grocerylist.id"
+                    " INNER JOIN item on groceryitem.item_id=item.id"
+                    " GROUP BY accountgrocerylist.id"
+                    " HAVING accountgrocerylist.account_id=:user_id")
         result = db.engine.execute(stmt,user_id=user_id)
         sum = None
         for row in result:
-            sum = row[2]
+            sum = row[1]
 
         return sum   
