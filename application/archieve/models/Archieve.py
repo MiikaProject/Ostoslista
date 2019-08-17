@@ -25,7 +25,7 @@ class Archieve(db.Model):
                     " INNER JOIN archieveitem ON archieve.id=archieveitem.archieve_id"
                     " INNER JOIN item ON archieveitem.item_id=item.id"
                     " GROUP BY archieveitem.archieve_id"
-                    " HAVING archieveitem.archieve_id=archieve_id")
+                    " HAVING archieveitem.archieve_id=:archieve_id")
 
         result = db.engine.execute(stmt,archieve_id=archieve_id)
 
