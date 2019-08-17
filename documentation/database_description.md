@@ -38,7 +38,7 @@ CREATE TABLE (
 )
 
 ### AccountGrocerylist
-Account grocerylist is association table between 
+Account grocerylist is association table between Account and Grocerylist.
 The create table SQL-query is:
 
 CREATE TABLE (
@@ -46,6 +46,15 @@ CREATE TABLE (
 )
 
 
+### Archieve
+Archieve is a table for collecting items to archieve. Archieve has 1:1 relationship with Account and 1:n relationship with ArchieveItem. The create table SQL-query is:
+
+CREATE TABLE (
+
+)
 
 
+
+#### ArchieveItem
+ArchieveItem is a association table between Archieve and Item. 
 
