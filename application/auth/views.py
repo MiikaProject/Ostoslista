@@ -78,15 +78,17 @@ def auth_register():
                 try:
                         db.session.add(newAccount)
                         db.session.commit()
-                #Deal with situation if username is already taken by returning to register page and displaying error message. SQLite
-                #and Postgre SQL give different error messages, that is why theres two if blocks
+
+                #Deal with situation if username is already taken by returning to register page and displaying error message.SQLite and POSTGre use
+                #differente errors messages, check for both.
                 except exc.SQLAlchemyError as error:
-                        error=str(error.orig)
-                        #For SQLite   
+                        error=str(error.orig)   
                         if error=="UNIQUE constraint failed: account.username":
                                 form.username.data=""
                                 return(render_template("register.html",form=form,error="Username not available, pick another one!"))
-                        if error=="duplicate key value violates unique constraint "account_username_key""        
+                        elif error=='duplicate key value violates unique constraint "account_username_key"':
                                 form.username.data=""
                                 return(render_template("register.html",form=form,error="Username not available, pick another one!"))
+                        else:
+                                return(redirect(url_for('auth.auth_login')))
                 return(redirect(url_for('auth.auth_login')))
