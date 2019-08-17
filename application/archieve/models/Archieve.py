@@ -24,8 +24,8 @@ class Archieve(db.Model):
         stmt = text("SELECT archieve.id,SUM(item.price) from archieve"
                     " INNER JOIN archieveitem ON archieve.id=archieveitem.archieve_id"
                     " INNER JOIN item ON archieveitem.item_id=item.id"
-                    " GROUP BY archieve_id"
-                    " HAVING archieve_id=:archieve_id")
+                    " GROUP BY archieve.id"
+                    " HAVING archieve.id=:archieve_id")
 
         result = db.engine.execute(stmt,archieve_id=archieve_id)
 
