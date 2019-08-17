@@ -1,5 +1,6 @@
 from application import db
 from sqlalchemy.sql import text
+from decimal import Decimal
 
 #Database model for GroceryList
 class GroceryList(db.Model):
@@ -32,7 +33,10 @@ class GroceryList(db.Model):
                     " HAVING accountgrocerylist.account_id=:user_id")
         result = db.engine.execute(stmt,user_id=user_id)
         sum = None
+
+        #Get result and round it to 2 decimals
         for row in result:
             sum = row[1]
+            sum = Decimal(sum).quantize(Decimal("1.00"))
 
         return sum   

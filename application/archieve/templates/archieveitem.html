@@ -1,0 +1,39 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+<!--Page for editing archieveitem properties-->
+{% block body %}
+
+<!--Display archieveitem properties-->
+<div class="lead">
+    <div>Name: {{archieveitem.item.name}}</div>
+    <div>Price: {{archieveitem.item.price}}</div>
+    <div>Date: {{archieveitem.date_bought.strftime('%d-%m-%Y')}} </div>
+</div>
+
+<br>
+
+<div class="lead">
+    Edit date by typing correct buy date below
+</div>
+
+<!--Form to edit archieveitem date-->
+<div>
+    <form method="POST" action="{{url_for('archieve.archieve_edit',archieveitem_id=archieveitem.id)}}">
+        <div class="form-group">
+            
+        </div>
+        <div class="row">
+            <div class="col">
+                {{wtf.form_field(form.date,class="form-control")}}
+            </div>
+            <div class="col">
+
+            </div>
+            
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+{% endblock %}

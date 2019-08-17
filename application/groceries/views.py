@@ -2,12 +2,17 @@ from flask import Blueprint,Flask,render_template,request,redirect,url_for
 from flask_login import login_required,current_user
 
 from application import app, db
+#Database models
 from application.items.models.item import Item
 from application.groceries.models.GroceryList import GroceryList
 from application.groceries.models.GroceryItem import GroceryItem
 from application.auth.models.AccountGrocerylist import AccountGrocerylist
+from application.archieve.models.Archieve import Archieve
+from application.archieve.models.ArchieveItem import ArchieveItem
+#Forms
 from application.groceries.forms.groceryform import GroceryForm
 from application.groceries.forms.grocerylistform import GroceryListForm
+
 
 #Create blueprint for the moodule
 groceries = Blueprint('groceries',__name__,
@@ -52,6 +57,13 @@ def groceries_remove(grocery_id):
     #Current version only supports 1 grocerylist so choose that
     accountgrocerylist = accountgrocerylists[0].grocerylist
 
+    #Get groceryarchieve for logged in user
+    accountarchieve = Archieve.query.filter_by(account_id=current_user.id).first()
+    print(accountarchieve)
+    newArchieveItem = ArchieveItem()
+    print(newArchieveItem)
+
+
     #convert grocery_id to int
     grocery_id = int(grocery_id)
 
@@ -59,9 +71,13 @@ def groceries_remove(grocery_id):
     for grocery in accountgrocerylist.items:
         if grocery.id==grocery_id:
             accountgrocerylist.items.remove(grocery)
+            newArchieveItem.item=grocery.item
+            accountarchieve.archieveitems.append(newArchieveItem)
 
     #Commit change to database
+    print(accountarchieve)
     db.session.add(accountgrocerylist)
+    db.session.add(accountarchieve)
     db.session.commit()
 
     return redirect(url_for("groceries.groceries_index"))

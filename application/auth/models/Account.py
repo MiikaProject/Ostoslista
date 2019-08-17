@@ -12,6 +12,7 @@ class Account(db.Model):
     username = db.Column(db.String(144), nullable=False,unique=True)
     password = db.Column(db.String(144), nullable=False)
     accountgrocerylists =db.relationship("AccountGrocerylist",back_populates="account")
+    archieve = db.relationship("Archieve",uselist=False,back_populates="account")
 
     def __init__(self, name, username, password):
         self.name = name

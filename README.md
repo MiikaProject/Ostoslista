@@ -1,4 +1,4 @@
-# Ostoslista
+#  Ostoslista
 
 Grocerylist application's purpose is to ease user's tough task of remembering the glocerylist at the supermarket. It also allows to users to store their purchases so they can follow their monthly spending on groceries.
 

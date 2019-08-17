@@ -67,15 +67,6 @@
 
         </div>
 
-        <!--Print errors incase input for add grocerylist is invalid-->
-        <div>
-                <ul>
-                  {% for error in form.name.errors %}
-                  <li>{{error}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-
         <!--Form and logic for adding item to grocerylist-->
         <div>
             <form method="POST" action="{{ url_for('groceries.groceries_create') }}">

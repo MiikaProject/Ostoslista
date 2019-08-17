@@ -8,6 +8,7 @@ from application.auth.forms.loginform import LoginForm
 from application.auth.forms.registerform import RegisterForm
 
 from application.auth.models.Account import Account
+from application.archieve.models.Archieve import Archieve
 
 
 #Create blueprint for the moodule
@@ -68,9 +69,11 @@ def auth_register():
                 if not form.validate():
                         return(render_template("register.html",form=form))
                 
-                #Create new account to be added to database
+                #Create new account to be added to database. Also create a grocery archieve for account.
                 newAccount = Account(name,username,password)
-                
+                archieveForAccount = Archieve()
+                newAccount.archieve=archieveForAccount
+
                 #Try to enter account into database
                 try:
                         db.session.add(newAccount)

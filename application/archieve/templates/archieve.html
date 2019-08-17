@@ -1,0 +1,54 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+<!--Page for managing users grocery archieve-->
+
+{% block body %}
+
+    <h2 style="margin: 20px;margin-left: 0px">Archieve</h2>
+
+<!--If user has archieve with items on it, display them-->
+    {% if (archieveitems is not none) and (archieveitems|length>=1) %}
+        <table style="border-collapse: collapse">
+            <tr>
+                <th>Name</th>
+                <th>Bought</th>
+                <th>Price</th>
+            </tr>
+            <!--To through items in archieve and display name,price,date-->
+            {% for archieveitem in archieveitems %}
+            <tr>
+                <td>{{archieveitem.item.name}}</td>
+                <td>{{archieveitem.date_bought.strftime('%d-%m-%Y')}}</td>
+                <td>{{archieveitem.item.price}}</td>
+                <td>
+                    <form method="GET" action="{{url_for('archieve.archieve_edit',archieveitem_id=archieveitem.id)}}">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="{{url_for('archieve.archieve_remove',archieveitem_id=archieveitem.id)}}">
+                        <button type="submit" class="btn btn-primary">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        
+            {% endfor %}
+           <!--Display total price of items in archieve--> 
+            <tr style="border-top:1px solid black">
+                <td>Total:</td>
+                <td> </td>
+                <td>{{archieve_sum}}</td>
+            </tr>
+
+        </table>
+
+    <!--If no items on archieve, display message-->    
+    {% else %}
+        <div>You do not have any items in your archieve!</div>
+
+    {% endif %}    
+
+
+
+{% endblock %}

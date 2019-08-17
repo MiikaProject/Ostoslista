@@ -6,6 +6,7 @@ class Item(db.Model):
     name = db.Column(db.String(144))
     price = db.Column(db.Float)
     groceryitem = db.relationship("GroceryItem",back_populates="item")
+    archieveitem = db.relationship("ArchieveItem",back_populates="item")
 
     def __init__(self,name,price):
         self.name = name

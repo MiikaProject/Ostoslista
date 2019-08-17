@@ -6,6 +6,8 @@
 <!--Login page-->
 <h2 style="margin: 20px;margin-left: 0px">Enter your username and password</h2>
 <br>
+<!--Show error if login fails due to wrong username/password-->
+<div>{{error}}</div>
 <form method="POST" action="{{url_for('auth.auth_login')}}">
         <div class="form-group">
             {{wtf.form_field(form.username,class="form-control")}}
