@@ -48,8 +48,8 @@
         {% endif %}
         <br>
 
-        <!--Print item choices-->
-        <div class="lead" style="margin: 15px;margin-left: 0px">Add items typing their name!</div>
+        <!--Print item choices and button to add it to grocerylist-->
+        <div class="lead" style="margin: 15px;margin-left: 0px">Add items to your grocerylist by pressing Add!</div>
         <div>
             <table>
                 <tr>
@@ -60,21 +60,16 @@
                     <tr>
                         <td>{{item.name}}</td>
                         <td>{{item.price}}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('groceries.grocerylist_add',item_id=item.id) }}">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
 
 
-        </div>
-
-        <!--Form and logic for adding item to grocerylist-->
-        <div>
-            <form method="POST" action="{{ url_for('groceries.groceries_create') }}">
-                    <div class="form-group">
-                        {{wtf.form_field(form.name,class="form-control")}}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add to list!</button>
-            </form>
         </div>
 
     <!-- If user does not have a own grocerylist yet, offers option to create one -->    

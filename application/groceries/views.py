@@ -127,6 +127,26 @@ def groceries_create():
 
         return redirect(url_for("groceries.groceries_index"))
 
+@groceries.route("/groceries/list/<item_id>",methods=["POST"])
+def grocerylist_add(item_id):
+    print(item_id)
+    itemToBeAdded = Item.query.filter(Item.id==item_id).first()
+    print(itemToBeAdded)
+    #Get grocerylist for currently logged in user
+
+    accountgrocerylists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
+
+    #Current version assumes user only has 1 grocerylist so chooce it
+    accountgrocerylist = accountgrocerylists[0].grocerylist
+
+    #Create a new instance of groceryitem and add it to grocerylist    
+    groceryitem=GroceryItem()
+    groceryitem.item= itemToBeAdded
+    accountgrocerylist.items.append(groceryitem)
+    db.session.add(accountgrocerylist)
+    db.session.commit() 
+
+    return redirect(url_for("groceries.groceries_index"))
 
 @groceries.route("/groceries/lists/new", methods=["GET","POST"])
 @login_required

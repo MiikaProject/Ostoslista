@@ -82,7 +82,8 @@ def auth_register():
                 #Deal with situation if username is already taken by returning to register page and displaying error message.SQLite and POSTGre use
                 #differente errors messages, check for both.
                 except exc.SQLAlchemyError as error:
-                        error=str(error.orig)   
+                        error=str(error.orig)
+                        print(error)   
                         if error=="UNIQUE constraint failed: account.username":
                                 form.username.data=""
                                 return(render_template("register.html",form=form,error="Username not available, pick another one!"))
