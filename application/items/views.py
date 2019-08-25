@@ -1,9 +1,11 @@
 from flask import Blueprint,render_template,request,redirect,url_for
-from flask_login import login_required
+from flask_login import current_user,login_required
 
-from application import app, db
+from application import app, db, login_manager
 from application.items.models.item import Item
 from application.items.forms.itemform import ItemForm
+from application.auth.models.Role import Role
+from application.auth.utils import role_required
 
 #Create blueprint for items
 items = Blueprint('items',__name__,
@@ -13,11 +15,10 @@ items = Blueprint('items',__name__,
 #Default display items page            
 @items.route("/items",methods=["GET"])
 @login_required
+@role_required('user')
 def items_index():
-
     #Pull all items from database and order them aplhabetically
     itemlist = Item.query.order_by(Item.name).all()
-
     return render_template("items.html",itemlist=itemlist,form=ItemForm()) 
 
 
@@ -25,6 +26,7 @@ def items_index():
 #Functionality to add new item to itemlist
 @items.route("/items", methods=["POST"])
 @login_required
+@role_required('user')
 def item_create():
     
     #Get form
@@ -50,6 +52,7 @@ def item_create():
 
 @items.route("/items/<item_id>",methods=["GET"])
 @login_required
+@role_required('user')
 def item_view(item_id):
     item = Item.query.filter(Item.id==item_id).first()
     return render_template("item.html",item=item,form=ItemForm())   
@@ -57,6 +60,7 @@ def item_view(item_id):
 #Edit item    
 @items.route("/items/<item_id>",methods=["POST"])
 @login_required
+@role_required('user')
 def item_update(item_id):
     form = ItemForm(request.form)
     print(form)
@@ -84,6 +88,7 @@ def item_update(item_id):
 #Remove item from itemlist    
 @items.route("/items/remove/<item_id>",methods=["POST"])
 @login_required
+@role_required('user')
 def item_remove(item_id):
     #get item from database
     item = Item.query.filter(Item.id==item_id).first()

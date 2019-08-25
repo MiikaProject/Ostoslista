@@ -2,6 +2,7 @@ from flask import Blueprint,Flask,render_template,request,redirect,url_for
 from flask_login import login_required,current_user
 
 from application import app, db
+from application.auth.utils import role_required
 #Database models
 from application.items.models.item import Item
 from application.groceries.models.GroceryList import GroceryList
@@ -21,6 +22,7 @@ groceries = Blueprint('groceries',__name__,
 
 @groceries.route("/groceries",methods=["GET"])
 @login_required
+@role_required('user')
 def groceries_index():
 
     #Get all possible item choices from database

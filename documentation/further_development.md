@@ -1,5 +1,6 @@
 # Further development ideas
 
+* Pulling item data from some webservice instead of manually inserting it to database.
 
 * Adding possibility for account having multiple grocerylists. Currently the app supports only one grocerylist per accoount. Multiple grocerylists could be useful if you could share grocerylist with other users.
 

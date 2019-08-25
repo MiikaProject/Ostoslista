@@ -1,0 +1,43 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+{% block body %}
+<!--The admin page is only available for users with admin priviledge-->
+<!--Admin can see all registered users and when they created their account and their last
+login time-->
+<h2>Admin page</h2>
+    {% if accounts %}
+        <div>Registered users</div>
+        <table>
+        <tr>
+            <th>Username</th>
+            <th>Last login</th>
+            <th>Account created</th>
+            <th>Times logged in</th>
+            <th>Role</th>
+        </tr>
+        {% for account in accounts %}
+        <tr>
+            <td>{{account.username}}</td>
+            <td align="center">{{account.login_times[account.login_times|length-1].login_time}}</td>
+            <td>{{account.account_created}}</td>
+            <td align="center">{{account.login_times|length}}</td>
+            <td>{{account.highest_role()}}</td>
+            {% if account.highest_role()=="user" %}
+            <td>
+                <form method="POST" action="{{url_for('auth.admin_remove_user',account_id=account.id)}}">
+                    <button type="submit" class="btn btn-primary">Remove</button>
+                </form>
+             </td>
+            {% endif %}
+            
+        </tr>
+        {% endfor %}
+    
+        </table>
+
+    {% else %}
+    <div>No users</div>
+    {% endif %}
+
+{% endblock %}

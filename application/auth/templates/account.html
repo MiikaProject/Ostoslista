@@ -1,0 +1,54 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+<!--Page for mananing account-->
+{% block body %}
+<!--Account details-->
+<h2>Your account</h2>
+<div>Name : {{current_user.name}}</div>
+<div>Username: {{current_user.username}}</div>
+<div>Account created: {{current_user.account_created}}</div>
+{% if current_user.login_times|length>1 %}
+<div>Last login: {{current_user.login_times[current_user.logintimes|length-2].login_time}} </div>
+{% else %}
+<div>Last login: {{current_user.login_times[current_user.logintimes|length-1].login_time}} </div>
+{% endif %}
+<br>
+<table>
+    <tr><th>Your roles:</th></tr>
+    {% for role in current_user.roles %}
+    <tr>
+        <td>{{role.name}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<!--Form for changing password-->
+<div class="lead">Change your password</div>
+<div>{{error}}</div>
+<form method="POST" action="{{url_for('auth.password_change',account_id=current_user.id)}}">
+    <div class="form-group">
+        {{wtf.form_field(passwordform.oldpassword,class="form-control")}}
+    </div>
+    <div class="form-group">
+        {{wtf.form_field(passwordform.newpassword,class="form-control")}}
+    </div>
+    <div class="form-group">
+        {{wtf.form_field(passwordform.repeatedpassword,class="form-control")}}
+    </div>
+    <button type="submit" class="btn btn-primary">Enter</button>
+</form>
+<br>
+<!--Form for removing account-->
+<div class="lead">Remove account</div>
+<div>Remove account by typing password and pressing Remove</div>
+<div>{{removeerror}}</div>
+<form method="POST" action="{{url_for('auth.account_remove',account_id=current_user.id,password=password)}}">
+        <div class="form-group">
+            Password<br>
+            <input class="form-control" type="password" name="password">
+        </div>
+    <button type="submit" class="btn btn-primary">Remove</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+<!--This page will be own to users who try to access page which their account role is not
+priviledged to view.-->
+{% block body %}
+<h2>You need to be {{role}} to do that!</h2>
+    {% if current_user.is_authenticated %}
+        <div>Check your credentials
+            <a href="{{url_for('auth.auth_account',user_id=current_user.id)}}">here</a>
+        </div>
+    {% endif %}
+
+{% endblock %}
