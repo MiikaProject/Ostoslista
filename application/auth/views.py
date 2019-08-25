@@ -117,6 +117,7 @@ def auth_register():
 @login_required
 @role_required('admin')
 def auth_admin():
+        #Get all accounts and pass it to the admin page
         accounts = Account.query.all()
         return(render_template("admin.html",accounts=accounts))
 

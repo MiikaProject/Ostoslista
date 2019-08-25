@@ -7,11 +7,11 @@
 <h2>Your account</h2>
 <div>Name : {{current_user.name}}</div>
 <div>Username: {{current_user.username}}</div>
-<div>Account created: {{current_user.account_created}}</div>
+<div>Account created: {{current_user.account_created.strftime("%Y-%m-%d %H:%M:%S")}}</div>
 {% if current_user.login_times|length>1 %}
-<div>Last login: {{current_user.login_times[current_user.logintimes|length-2].login_time}} </div>
+<div>Last login: {{current_user.login_times[current_user.logintimes|length-2].login_time.strftime("%Y-%m-%d %H:%M:%S")}} </div>
 {% else %}
-<div>Last login: {{current_user.login_times[current_user.logintimes|length-1].login_time}} </div>
+<div>Last login: {{current_user.login_times[current_user.logintimes|length-1].login_time.strftime("%Y-%m-%d %H:%M:%S")}} </div>
 {% endif %}
 <br>
 <table>
