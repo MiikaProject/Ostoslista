@@ -11,8 +11,8 @@
 * In order to run project locally you need to have Python installed. You can download and install from the Python website: (https://www.python.org/)
 * Navigate to the project folder with command line or open the project in editor such as [Visual Studio Code](https://code.visualstudio.com/)
 * Open terminal and create a virtual enviroment for the project by typing "python -m venv venv" to the terminal.
-* Activate the virtual enviroment by typing "source venv/scripts/activate" into terminal. 
-* Install project requirements defined in application/requirements.txt by typing: "pip install requirements.txt"
+* Activate the virtual enviroment by typing "source venv/scripts/activate" into the terminal. 
+* Install project requirements defined in application/requirements.txt by typing: "pip install requirements.txt" into the terminal.
 * Now you are set
 * Start the program by typing: "Python run.py"
 * Open web browser and go to address: http://127.0.0.1:5000/
