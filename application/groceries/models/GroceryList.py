@@ -6,15 +6,13 @@ from decimal import Decimal
 class GroceryList(db.Model):
     __tablename__ = 'grocerylist'
     id = db.Column(db.Integer,primary_key=True)
-    name = db.Column(db.String(144))
+    account_id = db.Column(db.Integer,db.ForeignKey('account.id'))
     items = db.relationship("GroceryItem",back_populates="grocerylist")
-    accounts = db.relationship("AccountGrocerylist",back_populates="grocerylist")
+    account = db.relationship("Account",uselist=False,back_populates="grocerylist")
 
-    def __init__(self,name):
-        self.name = name
     
     def __str__(self):
-        return f'listname:{self.name},items:{self.items},owners:{self.accounts}'
+        return f'id:{self.id},items:{self.items},owner:{self.account.name}'
     
 
     #Aggregate query for calculating total price of items on grocerylist linked to account
@@ -25,12 +23,11 @@ class GroceryList(db.Model):
 
     @staticmethod
     def calculate_grocerylist_sum(user_id):
-        stmt = text("SELECT accountgrocerylist.account_id,SUM(item.price) from accountgrocerylist"
-                    " INNER JOIN grocerylist ON accountgrocerylist.grocerylist_id=grocerylist.id"
-                    " INNER JOIN groceryitem ON groceryitem.grocerylist_id=grocerylist.id"
-                    " INNER JOIN item on groceryitem.item_id=item.id"
-                    " GROUP BY accountgrocerylist.id"
-                    " HAVING accountgrocerylist.account_id=:user_id")
+        stmt = text("SELECT account_id,SUM(item.price) FROM Grocerylist"
+                    " INNER JOIN groceryitem ON grocerylist_id=grocerylist.id"
+                    " INNER JOIN item ON item_id=item.id"
+                    " GROUP BY grocerylist.id"
+                    " HAVING account_id=:user_id")
         result = db.engine.execute(stmt,user_id=user_id)
         sum = None
 

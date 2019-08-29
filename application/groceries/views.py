@@ -3,13 +3,13 @@ from flask_login import login_required,current_user
 
 from application import app, db
 from application.auth.utils import role_required
+
 #Database models
 from application.items.models.item import Item
 from application.groceries.models.GroceryList import GroceryList
 from application.groceries.models.GroceryItem import GroceryItem
-from application.auth.models.AccountGrocerylist import AccountGrocerylist
-from application.archieve.models.Archieve import Archieve
-from application.archieve.models.ArchieveItem import ArchieveItem
+from application.archive.models.Archive import Archive
+from application.archive.models.ArchiveItem import ArchiveItem
 #Forms
 from application.groceries.forms.groceryform import GroceryForm
 from application.groceries.forms.grocerylistform import GroceryListForm
@@ -29,19 +29,9 @@ def groceries_index():
     itemlist = Item.query.all()
 
     #Get grocerylist for currently logged in user
-    lists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
+    grocerylist = GroceryList.query.filter_by(account_id=current_user.id).first()
 
-    #If user has multiple grocerylists, collect them all, in the current version user is
-    #only assumed to have one grocerylist!
-    grocerylists = []
-    for accountgrocerylist in lists:
-        grocerylists.append(accountgrocerylist.grocerylist)
-    
-    #Chooce the first grocerylist to be the grocerylist to be shown
-    if grocerylists:
-        grocerylist = grocerylists[0] 
-    else:
-        grocerylist = None
+    print(grocerylist)
     
     #Calculate total cost of groceries on grocerylist by using aggregate query
     #defined in groceries.GroceryList
@@ -55,79 +45,48 @@ def groceries_index():
 @login_required
 def groceries_remove(grocery_id):
     #Get matching grocerylist for logged in user
-    accountgrocerylists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
-    #Current version only supports 1 grocerylist so choose that
-    accountgrocerylist = accountgrocerylists[0].grocerylist
+    grocerylist = GroceryList.query.filter_by(account_id=current_user.id).first()
+
+    #convert grocery_id to int
+    grocery_id = int(grocery_id)
+
+    #Look for item in groceries.items and remove it from list
+    for grocery in grocerylist.items:
+        if grocery.id==grocery_id:
+            grocerylist.items.remove(grocery)
+
+    #Commit change to database
+    db.session.add(grocerylist)
+    db.session.commit()
+
+    return redirect(url_for("groceries.groceries_index"))
+
+@groceries.route("/groceries/buy/<grocery_id>",methods=["POST"])
+def grocerylist_buy(grocery_id):
+    #Get matching grocerylist for logged in user
+    grocerylist = GroceryList.query.filter_by(account_id=current_user.id).first()
 
     #Get groceryarchieve for logged in user
-    accountarchieve = Archieve.query.filter_by(account_id=current_user.id).first()
-    print(accountarchieve)
-    newArchieveItem = ArchieveItem()
-    print(newArchieveItem)
+    accountarchive = Archive.query.filter_by(account_id=current_user.id).first()
+    newArchiveItem = ArchiveItem()
 
 
     #convert grocery_id to int
     grocery_id = int(grocery_id)
 
     #Look for item in groceries.items and remove it from list
-    for grocery in accountgrocerylist.items:
+    for grocery in grocerylist.items:
         if grocery.id==grocery_id:
-            accountgrocerylist.items.remove(grocery)
-            newArchieveItem.item=grocery.item
-            accountarchieve.archieveitems.append(newArchieveItem)
+            grocerylist.items.remove(grocery)
+            newArchiveItem.item=grocery.item
+            accountarchive.archiveitems.append(newArchiveItem)
 
     #Commit change to database
-    print(accountarchieve)
-    db.session.add(accountgrocerylist)
-    db.session.add(accountarchieve)
+    db.session.add(grocerylist)
+    db.session.add(accountarchive)
     db.session.commit()
 
     return redirect(url_for("groceries.groceries_index"))
-
-
-@groceries.route("/groceries",methods=["POST"])
-@login_required
-def groceries_create():
-    
-    #Pull name from form
-    form = GroceryForm(request.form)
-    addedItem = form.name.data
-
-    #Get item from database
-    itemToBeAdded = Item.query.filter(Item.name==addedItem).first() 
-
-    #If item is not on itemlist,return back to groceries page and display error
-    if not itemToBeAdded:
-        #Add error message
-        errorlist=list(form.name.errors)
-        errorlist.append('Item not on Itemlist!')
-        form.name.errors=tuple(errorlist)
-        #Reset textfield
-        form.name.data=""
-        #Get itemlist for page
-        itemlist=Item.query.all()
-        #Get grocerylist for user
-        accountgrocerylist = AccountGrocerylist.query.filter_by(account_id=current_user.id).first()
-        grocerylist=accountgrocerylist.grocerylist
-        return render_template("groceries.html",grocerylist=grocerylist,form=form,itemlist=itemlist)
-
-    #Add item to grocerylist
-    else:
-        #Get grocerylist for currently logged in user
-
-        accountgrocerylists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
-
-        #Current version assumes user only has 1 grocerylist so chooce it
-        accountgrocerylist = accountgrocerylists[0].grocerylist
-
-        #Create a new instance of groceryitem and add it to grocerylist    
-        groceryitem=GroceryItem()
-        groceryitem.item= itemToBeAdded
-        accountgrocerylist.items.append(groceryitem)
-        db.session.add(accountgrocerylist)
-        db.session.commit()
-
-        return redirect(url_for("groceries.groceries_index"))
 
 @groceries.route("/groceries/list/<item_id>",methods=["POST"])
 def grocerylist_add(item_id):
@@ -136,38 +95,14 @@ def grocerylist_add(item_id):
     print(itemToBeAdded)
     #Get grocerylist for currently logged in user
 
-    accountgrocerylists = AccountGrocerylist.query.filter_by(account_id=current_user.id).all()
-
-    #Current version assumes user only has 1 grocerylist so chooce it
-    accountgrocerylist = accountgrocerylists[0].grocerylist
+    grocerylist = GroceryList.query.filter_by(account_id=current_user.id).first()
 
     #Create a new instance of groceryitem and add it to grocerylist    
     groceryitem=GroceryItem()
     groceryitem.item= itemToBeAdded
-    accountgrocerylist.items.append(groceryitem)
-    db.session.add(accountgrocerylist)
+    grocerylist.items.append(groceryitem)
+    db.session.add(grocerylist)
     db.session.commit() 
 
     return redirect(url_for("groceries.groceries_index"))
 
-@groceries.route("/groceries/lists/new", methods=["GET","POST"])
-@login_required
-def grocerylists_new():
-
-    #Display the page which allows user to create grocerylist
-    if request.method=="GET":
-        return(render_template("grocerylists.html",form=GroceryListForm()))
-
-    #Handle creation of grocerylist for user
-    elif request.method=="POST":
-        form = GroceryListForm(request.form)
-        name = form.name.data
-
-        accountlist = AccountGrocerylist()
-        grocerylist =GroceryList(name)
-        accountlist.account = current_user
-        grocerylist.accounts.append(accountlist)
-        db.session.add(grocerylist)
-        db.session.commit()
-
-        return redirect(url_for("groceries.groceries_index"))

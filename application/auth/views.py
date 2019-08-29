@@ -12,10 +12,11 @@ from application.auth.forms.passwordform import PasswordForm
 from application.auth.forms.removeform import RemoveForm
 
 from application.auth.models.Account import Account
-from application.archieve.models.Archieve import Archieve
+from application.archive.models.Archive import Archive
 from application.auth.models.Role import Role
 from application.auth.models.UserRoles import UserRoles
 from application.auth.models.LoginTime import LoginTime
+from application.groceries.models.GroceryList import GroceryList
 
 
 #Create blueprint for the moodule
@@ -80,10 +81,14 @@ def auth_register():
                 if not form.validate():
                         return(render_template("register.html",form=form))
                 
-                #Create new account to be added to database. Also create a grocery archieve for account.
+                #Create new account to be added to database. Also create a grocery archive for account.
                 newAccount = Account(name,username,password)
-                archieveForAccount = Archieve()
-                newAccount.archieve=archieveForAccount
+                archieveForAccount = Archive()
+                newAccount.archive=archieveForAccount
+
+                # Create a grocerylist for account
+                grocerylistForAccount = GroceryList()
+                newAccount.grocerylist = grocerylistForAccount
 
                 #Add role User to new account
                 

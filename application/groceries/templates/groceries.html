@@ -4,8 +4,6 @@
 
 <!-- Page to show user grocerylist and add items to grocerylist-->
 {% block body %}
-
-
     <!--Check if user has a grocerylist -->
     {% if grocerylist is not none %}
     <h2 style="margin: 20px;margin-left: 0px">GroceryList</h2>
@@ -16,6 +14,7 @@
 
         <!--List items on grocerylist-->
         {% else %}
+            <div class="lead">Remove item from grocerylist by pressing "Remove" and mark grocery being bought by pressing "Buy" </div>
             <table style="border-collapse: collapse">
                 <tr>
                     <th>Name</th>
@@ -32,6 +31,11 @@
                                 <button type="submit" class="btn btn-primary">Remove</button>
                             </form>
                         </td>
+                        <td>
+                            <form method="POST" action="{{url_for('groceries.grocerylist_buy',grocery_id=groceryitem.id)}}">
+                                <button type="submit" class="btn btn-primary">Buy</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
                 <!--If grocerylist sum is available, display it-->
@@ -43,8 +47,6 @@
                     </tr>
                 {% endif %}
             </table>
-            
-
         {% endif %}
         <br>
 
@@ -65,6 +67,7 @@
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </form>
                         </td>
+                        
                     </tr>
                 {% endfor %}
             </table>
@@ -72,14 +75,9 @@
 
         </div>
 
-    <!-- If user does not have a own grocerylist yet, offers option to create one -->    
+    <!-- If user does not have a own grocerylist yet -->    
     {% else %}
-
     <div class="lead">You dont have a grocerylist yet</div>
-    <div>Create one
-        <a href="{{url_for('groceries.grocerylists_new')}}">Here</a>
-    </div>
-
     {% endif %}
 
 {% endblock %}

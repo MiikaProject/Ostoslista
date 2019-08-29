@@ -12,8 +12,8 @@ class Account(db.Model):
     password = db.Column(db.String(144), nullable=False)
     account_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     login_times = db.relationship("LoginTime",back_populates="account")
-    accountgrocerylists =db.relationship("AccountGrocerylist",back_populates="account")
-    archieve = db.relationship("Archieve",uselist=False,back_populates="account")
+    grocerylist =db.relationship("GroceryList", uselist=False,back_populates="account")
+    archive = db.relationship("Archive",uselist=False,back_populates="account")
     roles = db.relationship('Role', secondary='user_roles',back_populates='users')
 
     def __init__(self, name, username, password):
@@ -70,5 +70,5 @@ class Account(db.Model):
         return 'user'    
 
     def __str__(self):
-        return f'name:{self.name},username:{self.username},grocerylists:{self.accountgrocerylists},roles:{self.roles}'
+        return f'name:{self.name},username:{self.username},grocerylists:{self.grocerylist},roles:{self.roles}'
         

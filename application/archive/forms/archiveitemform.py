@@ -6,7 +6,7 @@ from wtforms import validators,ValidationError
 from datetime import date
 
 #Form for login page
-class ArchieveItemForm(FlaskForm):
+class ArchiveItemForm(FlaskForm):
     date=DateField("Date")
 
     #Validate date, cant be in the future and must be after 1.1.2000

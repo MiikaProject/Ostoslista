@@ -1,14 +1,14 @@
 <!-- Uses default page layout from main/templates/layout.html -->
 {% extends "layout.html" %}
 
-<!--Page for editing archieveitem properties-->
+<!--Page for editing archiveitem properties-->
 {% block body %}
 
-<!--Display archieveitem properties-->
+<!--Display archiveitem properties-->
 <div class="lead">
-    <div>Name: {{archieveitem.item.name}}</div>
-    <div>Price: {{archieveitem.item.price}}</div>
-    <div>Date: {{archieveitem.date_bought.strftime('%d-%m-%Y')}} </div>
+    <div>Name: {{archiveitem.item.name}}</div>
+    <div>Price: {{archiveitem.item.price}}</div>
+    <div>Date: {{archiveitem.date_bought.strftime('%d-%m-%Y')}} </div>
 </div>
 
 <br>
@@ -17,9 +17,9 @@
     Edit date by typing correct buy date below
 </div>
 
-<!--Form to edit archieveitem date-->
+<!--Form to edit archiveitem date-->
 <div>
-    <form method="POST" action="{{url_for('archieve.archieve_edit',archieveitem_id=archieveitem.id)}}">
+    <form method="POST" action="{{url_for('archive.archive_edit',archiveitem_id=archiveitem.id)}}">
         <div class="form-group">
             
         </div>

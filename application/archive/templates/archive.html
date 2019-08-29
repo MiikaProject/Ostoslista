@@ -1,0 +1,54 @@
+<!-- Uses default page layout from main/templates/layout.html -->
+{% extends "layout.html" %}
+
+<!--Page for managing users grocery archive-->
+
+{% block body %}
+
+    <h2 style="margin: 20px;margin-left: 0px">Archive</h2>
+
+<!--If user has archive with items on it, display them-->
+    {% if (archiveitems is not none) and (archiveitems|length>=1) %}
+        <table style="border-collapse: collapse">
+            <tr>
+                <th>Name</th>
+                <th>Bought</th>
+                <th>Price</th>
+            </tr>
+            <!--To through items in archive and display name,price,date-->
+            {% for archiveitem in archiveitems %}
+            <tr>
+                <td>{{archiveitem.item.name}}</td>
+                <td>{{archiveitem.date_bought.strftime('%d-%m-%Y')}}</td>
+                <td>{{archiveitem.item.price}}</td>
+                <td>
+                    <form method="GET" action="{{url_for('archive.archive_edit',archiveitem_id=archiveitem.id)}}">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="{{url_for('archive.archive_remove',archiveitem_id=archiveitem.id)}}">
+                        <button type="submit" class="btn btn-primary">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        
+            {% endfor %}
+           <!--Display total price of items in archive--> 
+            <tr style="border-top:1px solid black">
+                <td>Total:</td>
+                <td> </td>
+                <td>{{archive_sum}}</td>
+            </tr>
+
+        </table>
+
+    <!--If no items on archive, display message-->    
+    {% else %}
+        <div>You do not have any items in your archive!</div>
+
+    {% endif %}    
+
+
+
+{% endblock %}

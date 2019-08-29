@@ -29,9 +29,8 @@ from application.items.models.item import Item
 from application.groceries.models.GroceryList import GroceryList
 from application.groceries.models.GroceryItem import GroceryItem
 from application.auth.models.Account import Account
-from application.auth.models.AccountGrocerylist import AccountGrocerylist
-from application.archieve.models.Archieve import Archieve
-from application.archieve.models.ArchieveItem import ArchieveItem
+from application.archive.models.Archive import Archive
+from application.archive.models.ArchiveItem import ArchiveItem
 from application.auth.models.Role import Role
 from application.auth.models.UserRoles import UserRoles
 from application.auth.models.LoginTime import LoginTime
@@ -55,14 +54,14 @@ from application.main.views import main
 from application.items.views import items
 from application.groceries.views import groceries
 from application.auth.views import auth
-from application.archieve.views import archieve
+from application.archive.views import archive
 
 #Register blueprints
 app.register_blueprint(items)
 app.register_blueprint(main)
 app.register_blueprint(groceries)
 app.register_blueprint(auth)
-app.register_blueprint(archieve)
+app.register_blueprint(archive)
 
 @login_manager.user_loader
 def load_user(user_id):
