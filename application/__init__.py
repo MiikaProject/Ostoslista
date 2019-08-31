@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 import os
 
+
 #This is the main init file for the application. All app configurations are here.
 #Also database models are created here.
 
@@ -47,7 +48,9 @@ login_manager.init_app(app)
 login_manager.login_view="auth.auth_login"
 login_manager.login_message="Please login to use this page."
 
-
+#Configure jinja with filter for datetimeformat
+from application.auth.utils import datetimeformat
+app.jinja_env.filters['datetimeformat'] = datetimeformat
 
 #Import blueprints(=views), blueprints allow modular project structure in Flask applications
 from application.main.views import main

@@ -22,7 +22,7 @@ login time-->
             {% if account.login_times|length==0  %}
             <td>No logins yet</td>
             {% else %}
-            <td align="center">{{account.login_times[account.login_times|length-1].login_time}}</td>
+            <td align="center">{{account.login_times[account.login_times|length-1].login_time|datetimeformat}}</td>
             {% endif %}
             <td>{{account.account_created}}</td>
             <td align="center">{{account.login_times|length}}</td>

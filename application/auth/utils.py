@@ -16,4 +16,6 @@ def role_required(role_needed):
     return decorator
 
 
-    
+
+def datetimeformat(value, format="%Y-%m-%d %H:%M:%S"):
+    return value.strftime(format)    
