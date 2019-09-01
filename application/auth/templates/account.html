@@ -9,9 +9,9 @@
 <div>Username: {{current_user.username}}</div>
 <div>Account created: {{current_user.account_created|datetimeformat}}</div>
 {% if current_user.login_times|length>1 %}
-<div>Last login: {{(current_user.login_times[current_user.logintimes|length-2].login_time)}} </div>
+<div>Last login: {{(current_user.login_times[current_user.logintimes|length-2].login_time)|datetimeformat}} </div>
 {% else %}
-<div>Last login: {{(current_user.login_times[current_user.logintimes|length-1].login_time)}} </div>
+<div>Last login: {{(current_user.login_times[current_user.logintimes|length-1].login_time)|datetimeformat}} </div>
 {% endif %}
 <br>
 <table>
