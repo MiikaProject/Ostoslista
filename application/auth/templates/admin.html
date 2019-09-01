@@ -24,7 +24,6 @@ login time-->
             {% else %}
             <td align="center">{{account.login_times[account.login_times|length-1].login_time|datetimeformat}}</td>
             {% endif %}
-            <td>{{account.account_created|datetimeformat}}</td>
             <td align="center">{{account.login_times|length}}</td>
             <td>{{account.highest_role()}}</td>
             {% if account.highest_role()=="user" %}
