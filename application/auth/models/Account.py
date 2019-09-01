@@ -71,4 +71,5 @@ class Account(db.Model):
 
     def __str__(self):
         return f'name:{self.name},username:{self.username},grocerylists:{self.grocerylist},roles:{self.roles}'
+
         

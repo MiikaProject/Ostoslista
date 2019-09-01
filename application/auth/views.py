@@ -155,6 +155,9 @@ def auth_unauthorized(role):
 @login_required
 @role_required('user')
 def auth_account(user_id):
+        print(current_user.login_times)
+        for logintime in current_user.login_times:
+                print(logintime)
         return render_template('account.html',user_id=user_id,passwordform=PasswordForm())
 
 #Remove account
