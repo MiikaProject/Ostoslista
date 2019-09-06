@@ -31,7 +31,6 @@ def groceries_index():
     #Get grocerylist for currently logged in user
     grocerylist = GroceryList.query.filter_by(account_id=current_user.id).first()
 
-    print(grocerylist)
     
     #Calculate total cost of groceries on grocerylist by using aggregate query
     #defined in groceries.GroceryList
@@ -90,9 +89,7 @@ def grocerylist_buy(grocery_id):
 
 @groceries.route("/groceries/list/<item_id>",methods=["POST"])
 def grocerylist_add(item_id):
-    print(item_id)
     itemToBeAdded = Item.query.filter(Item.id==item_id).first()
-    print(itemToBeAdded)
     #Get grocerylist for currently logged in user
 
     grocerylist = GroceryList.query.filter_by(account_id=current_user.id).first()

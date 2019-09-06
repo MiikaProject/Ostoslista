@@ -63,23 +63,30 @@ def item_view(item_id):
 @role_required('user')
 def item_update(item_id):
     form = ItemForm(request.form)
-    print(form)
     #get new name and price from form
     name = form.name.data
     price = form.price.data
-    print(price)
     #get item from database
     item = Item.query.filter(Item.id==item_id).first()
 
-    #set new name and price, check for empty fields, in that case keep old values
-    if(name!=""):
-        item.name=name
-    if not price:
-        print(price)
-    else:
-        item.price=price    
 
-    #commit changes to database
+    #set new name and price, check for empty fields, in that case keep old values
+    
+    if(name!=""):
+        #Check that name is over 3 characters, else return back with error message
+        if(len(name)>3):
+            item.name=name
+        else:
+            return render_template("item.html",item=item,form=ItemForm(),error="Name must be longer than 3 characters")    
+    if price:
+        #Check that price is positive, else return back with error message
+        if(price<0):
+            return render_template("item.html",item=item,form=ItemForm(),error="Price must be positive")
+        else:    
+            item.price=price    
+      
+
+    #commit changes to database    
     db.session.add(item)
     db.session.commit()
 

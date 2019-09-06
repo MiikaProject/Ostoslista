@@ -6,7 +6,7 @@
 {% block body %}
     <!--Check if user has a grocerylist -->
     {% if grocerylist is not none %}
-    <h2 style="margin: 20px;margin-left: 0px">GroceryList</h2>
+    <h2 style="margin: 20px;margin-left: 0px">Your grocery list</h2>
 
         <!--Display empty message if theres no items on list-->
         {% if grocerylist.items|length==0 %}
@@ -14,7 +14,7 @@
 
         <!--List items on grocerylist-->
         {% else %}
-            <div class="lead">Remove item from grocerylist by pressing "Remove" and mark grocery being bought by pressing "Buy" </div>
+            <div class="lead">Remove item from list by pressing "Remove" and mark grocery being bought by pressing "Buy" </div>
             <table style="border-collapse: collapse">
                 <tr>
                     <th>Name</th>
@@ -51,6 +51,7 @@
         <br>
 
         <!--Print item choices and button to add it to grocerylist-->
+        <h2 style="margin: 20px;margin-left: 0px">Possible purchases</h2>
         <div class="lead" style="margin: 15px;margin-left: 0px">Add items to your grocerylist by pressing Add!</div>
         <div>
             <table>

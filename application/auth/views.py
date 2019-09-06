@@ -94,7 +94,6 @@ def auth_register():
                 
                 wantedRole = Role.query.filter_by(name='user').first()
                 newAccount.roles.append(wantedRole)
-                print(newAccount)
 
                 #Try to enter account into database
                 try:
@@ -132,7 +131,6 @@ def auth_admin():
 @login_required
 @role_required('admin')
 def admin_remove_user(account_id):
-        print(account_id)
         removedUser= Account.query.filter_by(id=account_id).first()
 
         #Basic users only have one role which is user, this is to make sure admin cant remove admin 
@@ -155,9 +153,6 @@ def auth_unauthorized(role):
 @login_required
 @role_required('user')
 def auth_account(user_id):
-        print(current_user.login_times)
-        for logintime in current_user.login_times:
-                print(logintime)
         return render_template('account.html',user_id=user_id,passwordform=PasswordForm())
 
 #Remove account
@@ -183,21 +178,17 @@ def account_remove(account_id):
 @role_required('user')
 def password_change(account_id):
         form = PasswordForm(request.form)
- 
+        
+        #Check that password matches and validate newpassword
         if (form.oldpassword.data == current_user.password):
-                print('right pw')
                 if(form.repeatedpassword.data==form.newpassword.data):
-                        print('match')
                         if not form.validate():
-                                print('short pw')
                                 return render_template('account.html',user_id=account_id,passwordform=form,error='Password mininum lenght is 3!')
 
                         current_user.password=form.newpassword.data
-                        print(current_user.password)
                         db.session.add(current_user)
                         db.session.commit()
                 else:
-                        print('wrong match')
                         return render_template('account.html',user_id=account_id,passwordform=form,error='New passwords do not match!')
 
         else:
