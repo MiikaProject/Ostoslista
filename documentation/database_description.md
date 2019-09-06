@@ -1,5 +1,5 @@
 
-# Database desctiption
+# Database description
 
 ![Database image](database_diagram.jpg)
 
