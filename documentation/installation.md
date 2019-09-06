@@ -10,7 +10,7 @@
 * You should have project downloaded to your computer now
 * In order to run project locally you need to have Python installed. You can download and install from the Python website: (https://www.python.org/)
 * Navigate to the project folder with command line or open the project in editor such as [Visual Studio Code](https://code.visualstudio.com/)
-* Open terminal and create a virtual enviroment for the project by typing "python -m venv venv" to the terminal. This command can be different depending on the operating system you are using and the version of python you have installed.
+* Open terminal and create a virtual enviroment for the project by typing "py -m venv venv" to the terminal. This command can be different depending on the operating system you are using and the version of python you have installed. Above is for Windows 10.
 * Activate the virtual enviroment by typing "source venv/scripts/activate" into the terminal. This command also varies between operating systems. The example is for Windows 10.
 * Install project requirements defined in application/requirements.txt by typing: "pip install requirements.txt" into the terminal.
 * Now you are set
