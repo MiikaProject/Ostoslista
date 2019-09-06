@@ -103,7 +103,7 @@ CREATE TABLE (
 
 
 
-#### ArchiveItem
+### ArchiveItem
 ArchiveItem is a association table between Archieve and Item. It is a n to n relationship. ArchieveItem has following attributes: Id, archive_id and item_id. The create table SQL-query is:
 
 CREATE TABLE (  
